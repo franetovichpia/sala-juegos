@@ -1,8 +1,24 @@
-<div *ngIf="user" class="text-center">
-  <img [src]="user.avatar_url" width="150" class="rounded-circle mb-3">
-  <h2>{{ user.name }}</h2>
-  <p>{{ user.bio }}</p>
+<div class="container py-4 text-center">
+  <div *ngIf="!user" class="text-muted">Cargando...</div>
 
-  <h4 class="mt-4">Mi juego propio</h4>
-  <p>Acá explicás tu juego.</p>
+  <div *ngIf="user">
+    <img [src]="user.avatar_url" width="150" class="rounded-circle mb-3">
+    <h2>{{ user.name || user.login }}</h2>
+    <p *ngIf="user.bio">{{ user.bio }}</p>
+    <p><strong>Ubicación:</strong> {{ user.location || 'No especificada' }}</p>
+    <p><strong>Repositorios públicos:</strong> {{ user.public_repos }}</p>
+    <a [href]="user.html_url" target="_blank" class="btn btn-dark mb-4">
+      Ver perfil en GitHub
+    </a>
+
+    <hr>
+
+    <h4 class="mt-4">Mi juego propio: Número Secreto</h4>
+    <p>
+      El juego genera un número al azar entre 1 y 100. El jugador debe adivinarlo 
+      ingresando números, y el juego le indica si el número secreto es mayor o menor 
+      al ingresado. Gana cuando lo adivina, y se registran la cantidad de intentos 
+      y el tiempo que tardó.
+    </p>
+  </div>
 </div>
