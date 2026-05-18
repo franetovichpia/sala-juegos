@@ -1,8 +1,13 @@
 # SalaJuegos
 
 **Alumno:** Maria Pia Franetovich
+
 **Deploy:** https://sala-juegos-murex.vercel.app
+
+
 **Repositorio:** https://github.com/franetovichpia/sala-juegos
+
+
 **Tecnologias:** Angular, Supabase, Bootstrap, Vercel
 
 ## Sprint #1
