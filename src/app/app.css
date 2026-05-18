@@ -1,0 +1,11 @@
+
+nav.navbar a.nav-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 9999;
+}
+
+nav.navbar {
+  position: relative;
+  z-index: 9999;
+}
