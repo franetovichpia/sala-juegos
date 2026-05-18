@@ -11,3 +11,5 @@
 - Datos del alumno desde GitHub API
 - Favicon personalizado
 - Deploy en Vercel
+
+## Sprint #1 - Entrega 19-05-2026
