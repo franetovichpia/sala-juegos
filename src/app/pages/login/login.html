@@ -1,2 +1,21 @@
-<h1>Login</h1>
-<p>login works!</p>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="p-5 w-100" style="max-width: 420px; background: #13131f; border: 1px solid #7c3aed; border-radius: 20px;">
+    <h2 class="text-center mb-4" style="font-family: 'Orbitron', sans-serif; color: #a78bfa;">LOGIN</h2>
+    <div class="mb-3">
+      <label style="color: #94a3b8;">Email</label>
+      <input type="email" class="form-control mt-1" placeholder="tu@email.com"
+        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+    </div>
+    <div class="mb-4">
+      <label style="color: #94a3b8;">Contraseña</label>
+      <input type="password" class="form-control mt-1" placeholder="••••••••"
+        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+    </div>
+    <button class="btn w-100 fw-bold" style="background: #7c3aed; color: white; border-radius: 10px;">
+      Ingresar
+    </button>
+    <p class="text-center mt-3" style="color: #64748b; font-size: 0.9rem;">
+      ¿No tenés cuenta? <a routerLink="/registro" style="color: #a78bfa;">Registrate</a>
+    </p>
+  </div>
+</div>

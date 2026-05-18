@@ -9,3 +9,9 @@ nav.navbar {
   position: relative;
   z-index: 9999;
 }
+
+:host {
+  display: block;
+  background-color: #04040e;
+  min-height: 100vh;
+}

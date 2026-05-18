@@ -1,13 +1,14 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark px-3">
-  <a class="navbar-brand" routerLink="/home">Sala de Juegos</a>
-
-  <ul class="navbar-nav ms-auto">
-    <li class="nav-item"><a class="nav-link" routerLink="/login">Login</a></li>
-    <li class="nav-item"><a class="nav-link" routerLink="/registro">Registro</a></li>
-    <li class="nav-item"><a class="nav-link" routerLink="/quien-soy">Quién Soy</a></li>
+<nav class="navbar navbar-expand navbar-dark px-4" style="background: #0a0a0f; border-bottom: 2px solid #7c3aed;">
+  <a class="navbar-brand fw-bold" routerLink="/home" style="color: #a78bfa; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">
+       SALA DE JUEGOS
+  </a>
+  <ul class="navbar-nav ms-auto gap-2">
+    <li class="nav-item"><a class="nav-link" routerLink="/home" style="color: #e2e8f0;">Home</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/login" style="color: #e2e8f0;">Login</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/registro" style="color: #e2e8f0;">Registro</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/quien-soy" style="color: #e2e8f0;">Quién Soy</a></li>
   </ul>
 </nav>
-
 <div class="container mt-4">
   <router-outlet></router-outlet>
 </div>
