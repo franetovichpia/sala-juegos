@@ -4,11 +4,19 @@
   </a>
   <ul class="navbar-nav ms-auto gap-2">
     <li class="nav-item"><a class="nav-link" routerLink="/home" style="color: #e2e8f0;">Home</a></li>
+    <!-- solo se ven si NO estas logueado-->
     <li *ngIf="!estaLogueado" class="nav-item"><a class="nav-link" routerLink="/login" style="color: #e2e8f0;">Login</a></li>
     <li *ngIf="!estaLogueado" class="nav-item"><a class="nav-link" routerLink="/registro" style="color: #e2e8f0;">Registro</a></li>
     <li class="nav-item"><a class="nav-link" routerLink="/quien-soy" style="color: #e2e8f0;">Quién Soy</a></li>
+    
+    <!-- solo se ve SI estas logueado-->
+    <li *ngIf="estaLogueado" class="nav-item">
+  <a class="nav-link" routerLink="/chat" style="color: #e2e8f0;">Chat</a>
+</li>
   </ul>
 </nav>
 <div class="container mt-4">
   <router-outlet></router-outlet>
+  <!-- angular inyecta componente de la ruta-->
+  <app-chat-widget></app-chat-widget>
 </div>

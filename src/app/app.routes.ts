@@ -6,6 +6,8 @@ import { Home } from './pages/home/home';
 import { QuienSoy } from './pages/quien-soy/quien-soy';
 import { authGuard } from './guards/auth-guard';
 import { noAuthGuard } from './guards/no-auth-guard';
+import { Chat } from './chat/chat';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,4 +15,5 @@ export const routes: Routes = [
   { path: 'registro', component: Registro, canActivate: [noAuthGuard] },
   { path: 'home', component: Home },
   { path: 'quien-soy', component: QuienSoy, canActivate: [authGuard] },
+  { path: 'chat', component: Chat, canActivate: [authGuard] },
 ];

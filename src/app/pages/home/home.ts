@@ -11,22 +11,25 @@ import { SupabaseService } from '../../services/supabase';
   styleUrl: './home.css'
 })
 export class Home implements AfterViewInit {
+
+  // referencia al canvas para pdoer dibujar en el
   @ViewChild('starsCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private supabase = inject(SupabaseService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  usuarioNombre = '';
+  usuarioNombre = ''; // guarda el email del usuario
   estaLogueado = false;
 
   ngOnInit() {
+    //escucha cambios de sesion en tiempo real
     this.supabase.onAuthChange(session => {
       this.estaLogueado = !!session;
       this.usuarioNombre = session?.user?.email ?? '';
       this.cdr.detectChanges();
     });
-
+// chequea al cargar por si ya habia sesion activa
     this.supabase.getSession().then(({ data }) => {
       this.estaLogueado = !!data.session;
       this.usuarioNombre = data.session?.user?.email ?? '';
@@ -36,6 +39,7 @@ export class Home implements AfterViewInit {
 
   async cerrarSesion() {
     await this.supabase.logout();
+    //limpia el estado local, dsp de cerrar la sesion
     this.estaLogueado = false;
     this.usuarioNombre = '';
     this.cdr.detectChanges();

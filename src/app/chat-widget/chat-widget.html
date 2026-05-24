@@ -1,0 +1,49 @@
+<!-- Botón flotante -->
+<div *ngIf="estaLogueado && estado === 'cerrado'" class="chat-fab" (click)="abrir()">
+  <span class="chat-fab-icon">💬</span>
+  <span *ngIf="mensajesNoVistos > 0" class="chat-badge">{{ mensajesNoVistos }}</span>
+</div>
+
+<!-- Ventana chat -->
+<div *ngIf="estaLogueado && estado !== 'cerrado'"
+     class="chat-window"
+     [class.fullscreen]="estado === 'fullscreen'">
+
+  <!-- Header -->
+  <div class="cw-header">
+    <div class="cw-title">
+      <span class="chat-dot"></span>
+      CHAT GLOBAL
+    </div>
+    <div class="cw-actions">
+      <button class="cw-btn" (click)="toggleFullscreen()" title="Pantalla completa">
+        {{ estado === 'fullscreen' ? '↙' : '↗' }}
+        </button>
+      <button class="cw-btn" (click)="cerrar()" title="Cerrar">✕</button>
+    </div>
+  </div>
+
+  <!-- Mensajes -->
+  <div class="cw-mensajes" #mensajesContainer>
+    <div *ngFor="let m of mensajes"
+         class="mensaje-fila"
+         [class.mio]="esMio(m.usuario_email)">
+      <div class="burbuja">
+        <span class="mensaje-email" *ngIf="!esMio(m.usuario_email)">{{ m.usuario_email }}</span>
+        <span class="mensaje-texto">{{ m.mensaje }}</span>
+        <span class="mensaje-hora">{{ formatearHora(m.fecha) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="cw-input-area">
+    <input
+      class="cw-input"
+      [(ngModel)]="nuevoMensaje"
+      placeholder="Escribí un mensaje..."
+      (keyup.enter)="enviarMensaje()"
+    />
+    <button class="cw-send" (click)="enviarMensaje()">➤</button>
+  </div>
+</div>

@@ -80,4 +80,5 @@ export class Registro {
       this.cargando = false;
     }
   }
+  mostrarPassword = false;
 }

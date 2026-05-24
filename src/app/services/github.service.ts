@@ -8,6 +8,7 @@ export class GithubService {
 
   constructor(private http: HttpClient) {}
 
+  //recibe un username y devuelve los datos de ese perfil
   getUser(username: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${username}`);
   }
