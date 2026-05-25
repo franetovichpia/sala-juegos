@@ -1,60 +1,66 @@
 <div class="profile-section">
-  <div *ngIf="!user" class="loading">Cargando...</div>
+  @if (!user) {
+    <div class="loading">Cargando...</div>
+  }
 
-  <div *ngIf="user" class="profile-wrapper">
+  @if (user) {
+    <div class="profile-wrapper">
 
-    <!-- Tarjeta perfil -->
-    <div class="profile-card">
-      <div class="avatar-ring">
-        <img [src]="user.avatar_url" class="avatar-img" alt="avatar">
-      </div>
-      <h2 class="profile-name">{{ user.name || user.login }}</h2>
-      <p class="profile-login">@{{ user.login }}</p>
-      <p *ngIf="user.bio" class="profile-bio">{{ user.bio }}</p>
-
-      <div class="profile-stats">
-        <div class="stat">
-          <span class="stat-number">{{ user.public_repos }}</span>
-          <span class="stat-label">Repositorios</span>
+      <div class="profile-card">
+        <div class="avatar-ring">
+          <img [src]="user.avatar_url" class="avatar-img" alt="avatar">
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-number">{{ user.followers }}</span>
-          <span class="stat-label">Seguidores</span>
+        <h2 class="profile-name">{{ user.name || user.login }}</h2>
+        <p class="profile-login">@{{ user.login }}</p>
+        @if (user.bio) {
+          <p class="profile-bio">{{ user.bio }}</p>
+        }
+
+        <div class="profile-stats">
+          <div class="stat">
+            <span class="stat-number">{{ user.public_repos }}</span>
+            <span class="stat-label">Repositorios</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">{{ user.followers }}</span>
+            <span class="stat-label">Seguidores</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">{{ user.following }}</span>
+            <span class="stat-label">Siguiendo</span>
+          </div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-number">{{ user.following }}</span>
-          <span class="stat-label">Siguiendo</span>
+
+        @if (user.location) {
+          <div class="profile-meta">
+            <span class="meta-item">📍 {{ user.location }}</span>
+          </div>
+        }
+
+        <a [href]="user.html_url" target="_blank" class="github-btn">
+          Ver perfil en GitHub
+        </a>
+      </div>
+
+      <div class="game-card-profile">
+        <div class="game-badge">MI JUEGO</div>
+        <img class="game-logo-profile" src="assets/images/numerosecreto.png" alt="Número Secreto">
+        <h3 class="game-name-profile">Número Secreto</h3>
+        <p class="game-desc-profile">
+          El juego genera un número al azar entre 1 y 100. El jugador debe adivinarlo
+          ingresando números, y el juego le indica si el número secreto es mayor o menor
+          al ingresado. Gana cuando lo adivina, y se registran la cantidad de intentos
+          y el tiempo que tardó.
+        </p>
+        <div class="game-tags">
+          <span class="tag">Lógica</span>
+          <span class="tag">Adivinanza</span>
+          <span class="tag">Tiempo</span>
         </div>
       </div>
 
-      <div class="profile-meta" *ngIf="user.location">
-        <span class="meta-item">📍 {{ user.location }}</span>
-      </div>
-
-      <a [href]="user.html_url" target="_blank" class="github-btn">
-        Ver perfil en GitHub
-      </a>
     </div>
-
-    <!-- Tarjeta juego -->
-    <div class="game-card-profile">
-      <div class="game-badge">MI JUEGO</div>
-      <img class="game-logo-profile" src="assets/images/numerosecreto.png" alt="Número Secreto">
-      <h3 class="game-name-profile">Número Secreto</h3>
-      <p class="game-desc-profile">
-        El juego genera un número al azar entre 1 y 100. El jugador debe adivinarlo 
-        ingresando números, y el juego le indica si el número secreto es mayor o menor 
-        al ingresado. Gana cuando lo adivina, y se registran la cantidad de intentos 
-        y el tiempo que tardó.
-      </p>
-      <div class="game-tags">
-        <span class="tag">Lógica</span>
-        <span class="tag">Adivinanza</span>
-        <span class="tag">Tiempo</span>
-      </div>
-    </div>
-
-  </div>
+  }
 </div>

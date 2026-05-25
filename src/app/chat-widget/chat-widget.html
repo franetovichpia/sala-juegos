@@ -1,0 +1,51 @@
+@if (estaLogueado && estado === 'cerrado') {
+  <div class="chat-fab" (click)="abrir()">
+    <span class="chat-fab-icon">💬</span>
+    @if (mensajesNoVistos > 0) {
+      <span class="chat-badge">{{ mensajesNoVistos }}</span>
+    }
+  </div>
+}
+
+@if (estaLogueado && estado !== 'cerrado') {
+  <div class="chat-window" [class.fullscreen]="estado === 'fullscreen'">
+
+    <div class="cw-header">
+      <div class="cw-title">
+        <span class="chat-dot"></span>
+        CHAT GLOBAL
+      </div>
+      <div class="cw-actions">
+        <button class="cw-btn" (click)="toggleFullscreen()" title="Pantalla completa">
+          {{ estado === 'fullscreen' ? '↙' : '↗' }}
+        </button>
+        <button class="cw-btn" (click)="cerrar()" title="Cerrar">✕</button>
+      </div>
+    </div>
+
+    <div class="cw-mensajes" #mensajesContainer>
+      @for (m of mensajes; track m.id) {
+        <div class="mensaje-fila" [class.mio]="esMio(m.usuario_email)">
+          <div class="burbuja">
+            @if (!esMio(m.usuario_email)) {
+              <span class="mensaje-email">{{ m.usuario_email }}</span>
+            }
+            <span class="mensaje-texto">{{ m.mensaje }}</span>
+            <span class="mensaje-hora">{{ formatearHora(m.fecha) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="cw-input-area">
+      <input
+        class="cw-input"
+        [(ngModel)]="nuevoMensaje"
+        placeholder="Escribí un mensaje..."
+        (keyup.enter)="enviarMensaje()"
+      />
+      <button class="cw-send" (click)="enviarMensaje()">➤</button>
+    </div>
+
+  </div>
+}

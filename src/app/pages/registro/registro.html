@@ -3,39 +3,74 @@
 
     <h2 class="text-center mb-4" style="font-family: 'Orbitron', sans-serif; color: #a78bfa;">REGISTRO</h2>
 
-    <div *ngIf="errorMsg" class="alert mb-3" style="background: #2d0a0a; border: 1px solid #ef4444; color: #fca5a5; border-radius: 10px;">
-      {{ errorMsg }}
-    </div>
+    @if (errorMsg) {
+      <div class="alert mb-3" style="background: #2d0a0a; border: 1px solid #ef4444; color: #fca5a5; border-radius: 10px;">
+        {{ errorMsg }}
+      </div>
+    }
 
     <div class="mb-3">
       <label style="color: #94a3b8;">Nombre</label>
       <input type="text" class="form-control mt-1" placeholder="Tu nombre"
         [(ngModel)]="nombre"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+        [style.border-color]="errores['nombre'] ? '#ef4444' : '#7c3aed'"
+        style="background: #0a0a0f; color: #e2e8f0;">
+      @if (errores['nombre']) {
+        <small style="color: #fca5a5;">{{ errores['nombre'] }}</small>
+      }
     </div>
+
     <div class="mb-3">
       <label style="color: #94a3b8;">Apellido</label>
       <input type="text" class="form-control mt-1" placeholder="Tu apellido"
         [(ngModel)]="apellido"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+        [style.border-color]="errores['apellido'] ? '#ef4444' : '#7c3aed'"
+        style="background: #0a0a0f; color: #e2e8f0;">
+      @if (errores['apellido']) {
+        <small style="color: #fca5a5;">{{ errores['apellido'] }}</small>
+      }
     </div>
+
     <div class="mb-3">
       <label style="color: #94a3b8;">Edad</label>
       <input type="number" class="form-control mt-1" placeholder="Tu edad"
         [(ngModel)]="edad"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+        [style.border-color]="errores['edad'] ? '#ef4444' : '#7c3aed'"
+        style="background: #0a0a0f; color: #e2e8f0;">
+      @if (errores['edad']) {
+        <small style="color: #fca5a5;">{{ errores['edad'] }}</small>
+      }
     </div>
+
     <div class="mb-3">
       <label style="color: #94a3b8;">Email</label>
       <input type="email" class="form-control mt-1" placeholder="tu@email.com"
         [(ngModel)]="email"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+        [style.border-color]="errores['email'] ? '#ef4444' : '#7c3aed'"
+        style="background: #0a0a0f; color: #e2e8f0;">
+      @if (errores['email']) {
+        <small style="color: #fca5a5;">{{ errores['email'] }}</small>
+      }
     </div>
+
     <div class="mb-4">
       <label style="color: #94a3b8;">Contraseña</label>
-      <input type="password" class="form-control mt-1" placeholder="••••••••"
-        [(ngModel)]="password"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+      <div style="position: relative; display: flex; align-items: center;">
+        <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control mt-1" placeholder="••••••••"
+          [(ngModel)]="password"
+          [style.border-color]="errores['password'] ? '#ef4444' : '#7c3aed'"
+          style="background: #0a0a0f; color: #e2e8f0; padding-right: 3.5rem;">
+        <span (click)="mostrarPassword = !mostrarPassword"
+          style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #a78bfa; font-size: 0.8rem; user-select: none; font-family: 'Outfit', sans-serif; font-weight: 600;">
+          {{ mostrarPassword ? 'OCULTAR' : 'VER' }}
+        </span>
+      </div>
+      @if (errores['password']) {
+        <small style="color: #fca5a5;">{{ errores['password'] }}</small>
+      }
+      <small style="color: #475569; font-size: 0.75rem; display: block; margin-top: 0.25rem;">
+        Mínimo 8 caracteres, una mayúscula, un número y un carácter especial.
+      </small>
     </div>
 
     <button class="btn w-100 fw-bold" (click)="registrar()" [disabled]="cargando"
@@ -46,5 +81,6 @@
     <p class="text-center mt-3" style="color: #64748b; font-size: 0.9rem;">
       ¿Ya tenés cuenta? <a routerLink="/login" style="color: #a78bfa;">Iniciá sesión</a>
     </p>
+
   </div>
 </div>

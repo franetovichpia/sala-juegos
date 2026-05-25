@@ -1,12 +1,13 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
   <div class="p-5 w-100" style="max-width: 420px; background: #13131f; border: 1px solid #7c3aed; border-radius: 20px;">
-    
+
     <h2 class="text-center mb-4" style="font-family: 'Orbitron', sans-serif; color: #a78bfa;">LOGIN</h2>
 
-    <!-- Error modal simple -->
-    <div *ngIf="errorMsg" class="alert mb-3" style="background: #2d0a0a; border: 1px solid #ef4444; color: #fca5a5; border-radius: 10px;">
-      {{ errorMsg }}
-    </div>
+    @if (errorMsg) {
+      <div class="alert mb-3" style="background: #2d0a0a; border: 1px solid #ef4444; color: #fca5a5; border-radius: 10px;">
+        {{ errorMsg }}
+      </div>
+    }
 
     <div class="mb-3">
       <label style="color: #94a3b8;">Email</label>
@@ -14,11 +15,18 @@
         [(ngModel)]="email"
         style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
     </div>
+
     <div class="mb-4">
       <label style="color: #94a3b8;">Contraseña</label>
-      <input type="password" class="form-control mt-1" placeholder="••••••••"
-        [(ngModel)]="password"
-        style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0;">
+      <div style="position: relative; display: flex; align-items: center;">
+        <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control mt-1" placeholder="••••••••"
+          [(ngModel)]="password"
+          style="background: #0a0a0f; border: 1px solid #7c3aed; color: #e2e8f0; padding-right: 3.5rem;">
+        <span (click)="mostrarPassword = !mostrarPassword"
+          style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #a78bfa; font-size: 0.8rem; user-select: none; font-family: 'Outfit', sans-serif; font-weight: 600;">
+          {{ mostrarPassword ? 'OCULTAR' : 'VER' }}
+        </span>
+      </div>
     </div>
 
     <button class="btn w-100 fw-bold mb-3" (click)="ingresar()" [disabled]="cargando"
@@ -26,15 +34,15 @@
       {{ cargando ? 'Ingresando...' : 'Ingresar' }}
     </button>
 
-    <!-- Acceso rápido -->
     <p class="text-center mb-2" style="color: #64748b; font-size: 0.85rem;">Acceso rápido</p>
     <div class="d-flex gap-2 mb-3">
-      <button *ngFor="let u of usuariosRapidos; let i = index"
-        class="btn flex-fill btn-sm fw-bold"
-        (click)="loginRapido(u.email, u.password)"
-        style="background: #1e1b4b; color: #a78bfa; border: 1px solid #7c3aed; border-radius: 8px;">
-        Test {{ i + 1 }}
-      </button>
+      @for (u of usuariosRapidos; track u.email; let i = $index) {
+        <button class="btn flex-fill btn-sm fw-bold"
+          (click)="loginRapido(u.email, u.password)"
+          style="background: #1e1b4b; color: #a78bfa; border: 1px solid #7c3aed; border-radius: 8px;">
+          Test {{ i + 1 }}
+        </button>
+      }
     </div>
 
     <p class="text-center mt-2" style="color: #64748b; font-size: 0.9rem;">

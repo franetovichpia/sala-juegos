@@ -19,8 +19,8 @@ export class Login {
   password = '';
   errorMsg = '';
   cargando = false;
+  mostrarPassword = false;
 
-  // Usuarios de acceso rápido para testing
   usuariosRapidos = [
     { email: 'franetovmariapia@gmail.com', password: '123456' },
     { email: 'test1@test.com', password: '123456' },
