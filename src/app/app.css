@@ -1,17 +1,28 @@
-
-nav.navbar a.nav-link {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  z-index: 9999;
+.nav-btn {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border: 1px solid #7c3aed;
+  border-radius: 8px;
+  color: #a78bfa !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.5px;
 }
 
-nav.navbar {
-  position: relative;
-  z-index: 9999;
+.nav-btn:hover {
+  background: #7c3aed;
+  color: #fff !important;
 }
 
-:host {
-  display: block;
-  background-color: #04040e;
-  min-height: 100vh;
+.nav-btn-chat {
+  border-color: #06b6d4;
+  color: #06b6d4 !important;
+}
+
+.nav-btn-chat:hover {
+  background: #06b6d4;
+  color: #fff !important;
 }

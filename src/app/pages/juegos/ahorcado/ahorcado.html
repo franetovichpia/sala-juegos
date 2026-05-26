@@ -1,0 +1,219 @@
+<div class="ahorcado-container">
+
+  <!-- PANTALLA EXPLICACION -->
+  @if (!juegoIniciado && !juegoTerminado) {
+    <div class="pre-juego">
+      <h2 class="titulo">AHORCADO</h2>
+      <p class="categoria"> Todas las palabras son del mundo de la programación</p>
+
+      <div class="explicacion-box">
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">¿Cómo se juega?</p>
+            <p class="explicacion-texto">Tenés que adivinar una palabra letra por letra. Jugás las {{ colaPalabras.length }} palabras en orden. Cada palabra tiene hasta <strong>6 intentos</strong> antes de que el ahorcado se complete.</p>
+          </div>
+        </div>
+
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">Pistas</p>
+            <p class="explicacion-texto">Cada palabra tiene una pista disponible. Podés usarla cuando quieras, pero te costará <strong>-20 puntos</strong> en esa palabra.</p>
+          </div>
+        </div>
+
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">Puntaje</p>
+            <p class="explicacion-texto">Cada palabra vale <strong>100 puntos base</strong>. Se descuentan <strong>10 puntos por cada error</strong> cometido y <strong>20 puntos si usaste la pista</strong>. El mínimo por palabra es 0.</p>
+          </div>
+        </div>
+
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">¿Qué pasa si perdés una palabra?</p>
+            <p class="explicacion-texto">La partida <strong>termina inmediatamente</strong>. No sumás puntos por esa palabra y se guarda tu puntaje acumulado hasta ese momento.</p>
+          </div>
+        </div>
+
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">Puntaje máximo</p>
+            <p class="explicacion-texto">Si ganás todas las palabras sin errores y sin usar pistas, el puntaje máximo es <strong>{{ colaPalabras.length * 100 }} puntos</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-iniciar" (click)="iniciarJuego()">▶ Comenzar partida</button>
+    </div>
+  }
+
+  <!-- JUEGO EN CURSO -->
+  @if (juegoIniciado && !juegoTerminado) {
+    <div class="ahorcado-header">
+      <div class="header-izq">
+        <h2 class="titulo">AHORCADO</h2>
+        <span class="progreso-label">{{ progresoLabel }}</span>
+      </div>
+      <div class="header-acciones">
+        <span class="timer">⏱ {{ formatearTiempo() }}</span>
+        <span class="puntaje-header">⭐ {{ puntajeTotal }} pts</span>
+        <button class="btn-abandonar" (click)="confirmarAbandonar()">✕ Abandonar</button>
+      </div>
+    </div>
+
+    <div class="ahorcado-body">
+
+      <div class="dibujo">
+        <svg viewBox="0 0 200 220" width="180" height="200">
+          <line x1="20" y1="210" x2="180" y2="210" stroke="#7c3aed" stroke-width="4"/>
+          <line x1="60" y1="210" x2="60" y2="20" stroke="#7c3aed" stroke-width="4"/>
+          <line x1="60" y1="20" x2="130" y2="20" stroke="#7c3aed" stroke-width="4"/>
+          <line x1="130" y1="20" x2="130" y2="45" stroke="#7c3aed" stroke-width="4"/>
+          @if (errores >= 1) {
+            <circle cx="130" cy="60" r="15" stroke="#e2e8f0" stroke-width="3" fill="none"/>
+          }
+          @if (errores >= 2) {
+            <line x1="130" y1="75" x2="130" y2="130" stroke="#e2e8f0" stroke-width="3"/>
+          }
+          @if (errores >= 3) {
+            <line x1="130" y1="90" x2="105" y2="115" stroke="#e2e8f0" stroke-width="3"/>
+          }
+          @if (errores >= 4) {
+            <line x1="130" y1="90" x2="155" y2="115" stroke="#e2e8f0" stroke-width="3"/>
+          }
+          @if (errores >= 5) {
+            <line x1="130" y1="130" x2="105" y2="165" stroke="#e2e8f0" stroke-width="3"/>
+          }
+          @if (errores >= 6) {
+            <line x1="130" y1="130" x2="155" y2="165" stroke="#e2e8f0" stroke-width="3"/>
+          }
+        </svg>
+      </div>
+
+      <div class="palabra-display">
+        @for (letra of palabraMostrada; track $index) {
+          <span class="letra-slot" [class.revelada]="letra !== '_'">{{ letra }}</span>
+        }
+      </div>
+
+      <p class="errores-label">Errores: {{ errores }} / {{ maxErrores }}</p>
+
+      @if (!mostrarPista) {
+        <button class="btn-pista-mini" (click)="verPista()">💡 Ver pista</button>
+      } @else {
+        <p class="pista-inline">💡 {{ pista }}</p>
+      }
+
+      <!-- RESULTADO POR PALABRA -->
+      @if (palabraTerminada) {
+        <div class="resultado-palabra" [class.gano-palabra]="ganoPalabra" [class.perdio-palabra]="!ganoPalabra">
+          @if (ganoPalabra) {
+            <p class="resultado-palabra-texto"> ¡Correcto!</p>
+            <p class="puntos-ganados">
+              +{{ 100 - (usoPista ? 20 : 0) - errores * 10 < 0 ? 0 : 100 - (usoPista ? 20 : 0) - errores * 10 }} puntos
+            </p>
+            <button class="btn-siguiente" (click)="siguientePalabra()">
+              {{ indiceActual + 1 < colaPalabras.length ? 'Siguiente palabra →' : '🏁 Ver resultado final' }}
+            </button>
+          } @else {
+            <p class="resultado-palabra-texto"> ¡Perdiste! La palabra era: <strong>{{ palabra }}</strong></p>
+            <button class="btn-siguiente perdio-btn" (click)="finalizarPartida(false)">Ver resultado final</button>
+          }
+        </div>
+      }
+
+      @if (!palabraTerminada) {
+        <div class="teclado">
+          @for (letra of abecedario; track letra) {
+            <button
+              class="tecla"
+              [class.usada]="estaUsada(letra)"
+              [class.error]="esError(letra)"
+              [disabled]="estaUsada(letra)"
+              (click)="seleccionarLetra(letra)">
+              {{ letra }}
+            </button>
+          }
+        </div>
+      }
+
+    </div>
+
+    <!-- MODAL ABANDONAR -->
+    @if (mostrarConfirmAbandonar) {
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <p class="modal-titulo">¿Abandonar partida?</p>
+          <p class="modal-texto">Perderás todo el progreso de esta partida.</p>
+          <div class="modal-acciones">
+            <button class="btn-modal-cancelar" (click)="cancelarAbandonar()">Seguir jugando</button>
+            <button class="btn-modal-confirmar" (click)="abandonarPartida()">Abandonar</button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- RESULTADO FINAL -->
+  @if (juegoTerminado) {
+    <div class="resultado-final">
+      <h2 class="titulo">{{ ganoPartida ? ' ¡Completaste el juego!' : '💀 Fin de la partida' }}</h2>
+
+      <div class="stats-finales">
+        <div class="stat-item">
+          <span class="stat-label">Puntaje</span>
+          <span class="stat-valor" style="color: #a78bfa">{{ puntajeTotal }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Palabras</span>
+          <span class="stat-valor" style="color: #4ade80">{{ palabrasGanadas }} / {{ colaPalabras.length }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Tiempo</span>
+          <span class="stat-valor" style="color: #06b6d4">{{ formatearTiempo() }}</span>
+        </div>
+      </div>
+
+      <div class="resultado-final-acciones">
+        <button class="btn-home" (click)="irAlHome()">✕ Ir al inicio</button>
+        <button class="btn-ranking" (click)="mostrarRanking = !mostrarRanking">🏅 Ver ranking</button>
+        <button class="btn-jugar-de-nuevo" (click)="prepararPartida()">↺ Jugar de nuevo</button>
+      </div>
+
+      @if (mostrarRanking) {
+        <div class="ranking-box">
+          <h3 class="ranking-titulo">Top 10 — Ahorcado</h3>
+          <table class="ranking-tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+                <th>Palabras</th>
+                <th>Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of ranking; track $index) {
+                <tr [class.fila-propia]="r.usuario_email === usuarioEmail">
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ r.usuario_email }}</td>
+                  <td>{{ r.puntaje }}</td>
+                  <td>{{ r.palabras_ganadas }} / {{ r.palabras_totales }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+    </div>
+  }
+
+</div>

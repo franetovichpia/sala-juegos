@@ -2,30 +2,66 @@
   <canvas class="stars-canvas" #starsCanvas></canvas>
 
   <div class="grid-wrapper">
-    <h1 class="glow-title">LET'S PLAY!</h1>
-    <p class="subtitle">Elegí un juego y poné a prueba tus habilidades</p>
 
-    <div class="games-grid">
-      <div class="game-card">
-        <img class="game-logo" src="assets/images/ahorcado.png" alt="Ahorcado">
-        <h5 class="game-title">Ahorcado</h5>
-        <p class="game-desc">Adivina la palabra letra por letra</p>
+    @if (estaLogueado) {
+      <div class="user-bar">
+        <div class="user-info">
+          <div class="user-avatar">{{ usuarioNombre[0].toUpperCase() }}</div>
+          <div class="user-details">
+            <span class="user-label">Bienvenido de vuelta</span>
+            <span class="user-email">{{ usuarioNombre }}</span>
+          </div>
+        </div>
+        <button class="btn-logout" (click)="cerrarSesion()">Cerrar sesión</button>
       </div>
-      <div class="game-card">
-        <img class="game-logo" src="assets/images/mayor-menor.png" alt="Mayor o Menor">
-        <h5 class="game-title">Mayor o Menor</h5>
-        <p class="game-desc">Adiviná si la próxima carta es mayor</p>
+    }
+
+    @if (!estaLogueado) {
+      <div class="guest-section">
+        <h1 class="glow-title">LET'S PLAY!</h1>
+        <p class="subtitle">Poné a prueba tus habilidades</p>
+        <p class="guest-subtitle">Iniciá sesión o registrate para acceder a los juegos</p>
+        <div class="d-flex gap-3 justify-content-center mt-4">
+          <a routerLink="/login" class="btn fw-bold px-4 py-2"
+            style="background: #7c3aed; color: white; border-radius: 10px; font-family: 'Quantico', sans-serif; letter-spacing: 1px;">
+            Iniciar sesión
+          </a>
+          <a routerLink="/registro" class="btn fw-bold px-4 py-2"
+            style="background: transparent; border: 1px solid #7c3aed; color: #a78bfa; border-radius: 10px; font-family: 'Quantico', sans-serif; letter-spacing: 1px;">
+            Registrarse
+          </a>
+        </div>
       </div>
-      <div class="game-card">
-        <img class="game-logo" src="assets/images/preguntados.png" alt="Preguntados">
-        <h5 class="game-title">Preguntados</h5>
-        <p class="game-desc">Respondé preguntas de trivia</p>
+    }
+
+    @if (estaLogueado) {
+      <div class="games-grid">
+        <div class="game-card" routerLink="/juegos/ahorcado">
+          <img class="game-logo" src="assets/images/ahorcado.png" alt="Ahorcado">
+          <h5 class="game-title">Ahorcado</h5>
+          <p class="game-desc">Adivina la palabra letra por letra</p>
+        </div>
+        <div class="game-card" routerLink="/juegos/mayor-menor">
+          <img class="game-logo" src="assets/images/mayor-menor.png" alt="Mayor o Menor">
+          <h5 class="game-title">Mayor o Menor</h5>
+          <p class="game-desc">Adiviná si la próxima carta es mayor</p>
+        </div>
+        <div class="game-card" routerLink="/juegos/preguntados">
+          <img class="game-logo" src="assets/images/preguntados.png" alt="Preguntados">
+          <h5 class="game-title">Preguntados</h5>
+          <p class="game-desc">Respondé preguntas de trivia</p>
+        </div>
+        <div class="game-card" routerLink="/juegos/numero-secreto">
+          <img class="game-logo" src="assets/images/numerosecreto.png" alt="Número Secreto">
+          <h5 class="game-title">Número Secreto</h5>
+          <p class="game-desc">Adiviná el número entre 1 y 100</p>
+        </div>
       </div>
-      <div class="game-card">
-        <img class="game-logo" src="assets/images/numerosecreto.png" alt="Número Secreto">
-        <h5 class="game-title">Número Secreto</h5>
-        <p class="game-desc">Adiviná el número entre 1 y 100</p>
+
+      <div class="extra-btns">
+        <a routerLink="/resultados" class="btn-extra">🏅 Ver resultados</a>
       </div>
-    </div>
+    }
+
   </div>
 </div>

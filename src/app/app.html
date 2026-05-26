@@ -1,14 +1,22 @@
-<nav class="navbar navbar-expand navbar-dark px-4" style="background: #0a0a0f; border-bottom: 2px solid #7c3aed;">
-  <a class="navbar-brand fw-bold" routerLink="/home" style="color: #a78bfa; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">
-       SALA DE JUEGOS
+<nav style="background: #0a0a0f; border-bottom: 2px solid #7c3aed; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+  <a routerLink="/home" style="color: #a78bfa; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-weight: 700; text-decoration: none; font-size: 1.1rem;">
+    SALA DE JUEGOS
   </a>
-  <ul class="navbar-nav ms-auto gap-2">
-    <li class="nav-item"><a class="nav-link" routerLink="/home" style="color: #e2e8f0;">Home</a></li>
-    <li class="nav-item"><a class="nav-link" routerLink="/login" style="color: #e2e8f0;">Login</a></li>
-    <li class="nav-item"><a class="nav-link" routerLink="/registro" style="color: #e2e8f0;">Registro</a></li>
-    <li class="nav-item"><a class="nav-link" routerLink="/quien-soy" style="color: #e2e8f0;">Quién Soy</a></li>
-  </ul>
+  <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+    <a class="nav-btn" routerLink="/home">Home</a>
+    @if (!estaLogueado) {
+      <a class="nav-btn" routerLink="/login">Login</a>
+      <a class="nav-btn" routerLink="/registro">Registro</a>
+    }
+    <a class="nav-btn" routerLink="/quien-soy">Quién Soy</a>
+    @if (estaLogueado) {
+      <a class="nav-btn nav-btn-chat" (click)="abrirChat()" style="cursor: pointer;">💬 Chat</a>
+    }
+  </div>
 </nav>
+
 <div class="container mt-4">
   <router-outlet></router-outlet>
 </div>
+
+<app-chat-widget #chatWidget></app-chat-widget>

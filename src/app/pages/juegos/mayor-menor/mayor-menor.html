@@ -1,0 +1,190 @@
+<div class="mm-container">
+
+  <!-- PANTALLA EXPLICACION -->
+  @if (!juegoIniciado && !juegoTerminado) {
+    <div class="pre-juego">
+      <h2 class="titulo">MAYOR O MENOR</h2>
+      <p class="categoria">🃏 Baraja española — Adiviná si la próxima carta es mayor o menor</p>
+
+      <div class="explicacion-box">
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">¿Cómo se juega?</p>
+            <p class="explicacion-texto">Se te muestra una carta de la baraja española. Tenés que adivinar si la siguiente carta tiene un <strong>mayor o menor valor</strong>. Jugás <strong>{{ RONDAS_TOTALES }} rondas</strong> en total.</p>
+          </div>
+        </div>
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">Valores de las cartas</p>
+            <p class="explicacion-texto">De menor a mayor: <strong>As, 2, 3, 4, 5, 6, 7, Sota, Caballo, Rey</strong>. Los palos son oros 🌕, copas 🏆, espadas ⚔️ y bastos 🪵. Si las cartas tienen el mismo valor, es empate y pasás sin perder.</p>
+          </div>
+        </div>
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">Puntaje</p>
+            <p class="explicacion-texto">Cada ronda acertada vale <strong>100 puntos</strong>. Puntaje máximo: <strong>{{ RONDAS_TOTALES * 100 }} puntos</strong>.</p>
+          </div>
+        </div>
+        <div class="explicacion-seccion">
+          <span class="explicacion-icono"></span>
+          <div>
+            <p class="explicacion-titulo">¿Qué pasa si te equivocás?</p>
+            <p class="explicacion-texto">La partida <strong>termina inmediatamente</strong> y se guarda tu puntaje acumulado.</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-iniciar" (click)="iniciarJuego()">▶ Comenzar partida</button>
+    </div>
+  }
+
+  <!-- JUEGO EN CURSO -->
+  @if (juegoIniciado && !juegoTerminado) {
+    <div class="mm-header">
+      <div class="header-izq">
+        <h2 class="titulo">MAYOR O MENOR</h2>
+        <span class="progreso-label">{{ progresoLabel }}</span>
+      </div>
+      <div class="header-acciones">
+        <span class="timer">⏱ {{ formatearTiempo() }}</span>
+        <span class="puntaje-header">⭐ {{ puntajeTotal }} pts</span>
+        <button class="btn-abandonar" (click)="confirmarAbandonar()">✕ Abandonar</button>
+      </div>
+    </div>
+
+    <div class="mm-body">
+
+      <div class="feedback-ronda"
+           [class.visible]="resultadoRonda !== null"
+           [class.feedback-gano]="resultadoRonda === 'gano'"
+           [class.feedback-perdio]="resultadoRonda === 'perdio'"
+           [class.feedback-empate]="resultadoRonda === 'empate'">
+        @if (resultadoRonda === 'gano') { ✅ ¡Correcto! +100 pts }
+        @if (resultadoRonda === 'perdio') { ❌ ¡Incorrecto! }
+        @if (resultadoRonda === 'empate') { 🤝 ¡Empate! Seguís jugando }
+      </div>
+
+      <div class="cartas-area">
+
+        <div class="carta-wrapper">
+          <p class="carta-label">Carta actual</p>
+          @if (cartaActual) {
+            <div class="carta-española">
+              <div class="carta-top">
+                <span class="carta-num">{{ getNombreValor(cartaActual.valor) }}</span>
+                <span class="carta-palo-small">{{ cartaActual.palo.emoji }}</span>
+              </div>
+              <div class="carta-centro-emoji">{{ cartaActual.palo.emoji }}</div>
+              <div class="carta-bottom">
+                <span class="carta-palo-small">{{ cartaActual.palo.emoji }}</span>
+                <span class="carta-num">{{ getNombreValor(cartaActual.valor) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="flecha-centro">
+          @if (!esperandoRespuesta) { ? }
+          @if (esperandoRespuesta) { <span class="spinner-small"></span> }
+        </div>
+
+        <div class="carta-wrapper">
+          <p class="carta-label">Próxima carta</p>
+          @if (cartaSiguiente) {
+            <div class="carta-española">
+              <div class="carta-top">
+                <span class="carta-num">{{ getNombreValor(cartaSiguiente.valor) }}</span>
+                <span class="carta-palo-small">{{ cartaSiguiente.palo.emoji }}</span>
+              </div>
+              <div class="carta-centro-emoji">{{ cartaSiguiente.palo.emoji }}</div>
+              <div class="carta-bottom">
+                <span class="carta-palo-small">{{ cartaSiguiente.palo.emoji }}</span>
+                <span class="carta-num">{{ getNombreValor(cartaSiguiente.valor) }}</span>
+              </div>
+            </div>
+          } @else {
+            <div class="carta-española carta-dorso">
+              <div class="dorso-pattern">🂠</div>
+            </div>
+          }
+        </div>
+
+      </div>
+
+      @if (!esperandoRespuesta) {
+        <div class="botones-adivinar">
+          <button class="btn-mayor" (click)="adivinar('mayor')">▲ Mayor</button>
+          <button class="btn-menor" (click)="adivinar('menor')">▼ Menor</button>
+        </div>
+      }
+
+    </div>
+
+    @if (mostrarConfirmAbandonar) {
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <p class="modal-titulo">¿Abandonar partida?</p>
+          <p class="modal-texto">Perderás todo el progreso de esta partida.</p>
+          <div class="modal-acciones">
+            <button class="btn-modal-cancelar" (click)="cancelarAbandonar()">Seguir jugando</button>
+            <button class="btn-modal-confirmar" (click)="abandonarPartida()">Abandonar</button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- RESULTADO FINAL -->
+  @if (juegoTerminado) {
+    <div class="resultado-final">
+      <h2 class="titulo">{{ ganoPartida ? '🏆 ¡Completaste el juego!' : '💀 Fin de la partida' }}</h2>
+
+      <div class="stats-finales">
+        <div class="stat-item">
+          <span class="stat-label">Puntaje</span>
+          <span class="stat-valor" style="color: #a78bfa">{{ puntajeTotal }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Rondas</span>
+          <span class="stat-valor" style="color: #4ade80">{{ rondasGanadas }} / {{ RONDAS_TOTALES }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Tiempo</span>
+          <span class="stat-valor" style="color: #06b6d4">{{ formatearTiempo() }}</span>
+        </div>
+      </div>
+
+      <div class="resultado-final-acciones">
+        <button class="btn-home" (click)="irAlHome()">✕ Ir al inicio</button>
+        <button class="btn-ranking" (click)="mostrarRanking = !mostrarRanking">🏅 Ver ranking</button>
+        <button class="btn-jugar-de-nuevo" (click)="prepararPartida()">↺ Jugar de nuevo</button>
+      </div>
+
+      @if (mostrarRanking) {
+        <div class="ranking-box">
+          <h3 class="ranking-titulo">🏅 Top 10 — Mayor o Menor</h3>
+          <table class="ranking-tabla">
+            <thead>
+              <tr><th>#</th><th>Usuario</th><th>Puntaje</th><th>Rondas</th><th>Tiempo</th></tr>
+            </thead>
+            <tbody>
+              @for (r of ranking; track $index) {
+                <tr [class.fila-propia]="r.usuario_email === usuarioEmail">
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ r.usuario_email }}</td>
+                  <td>{{ r.puntaje }}</td>
+                  <td>{{ r.rondas_ganadas }} / {{ r.rondas_totales }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  }
+
+</div>
