@@ -1,24 +1,18 @@
-/* estilizar el componente compleot*/
 :host {
   display: block;
-  height: 100%;
 }
 
-/*contenedor principal de la pagina*/
 .hero-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  min-height: calc(100vh - 56px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #04040e;
-  padding: 0;
-  margin: 0;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .stars-canvas {
@@ -36,7 +30,6 @@
   z-index: 1;
   width: 100%;
   max-width: 820px;
-  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,6 +77,7 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
 
 .game-card::before {
@@ -106,7 +100,6 @@
 .game-card:hover::before {
   opacity: 1;
 }
-
 
 .game-logo {
   width: 80px;
@@ -142,6 +135,7 @@
   0%, 100% { text-shadow: 0 0 20px #a78bfa, 0 0 50px #7c3aed; }
   50%       { text-shadow: 0 0 40px #a78bfa, 0 0 80px #7c3aed, 0 0 130px #4c1d95; }
 }
+
 .guest-section {
   display: flex;
   flex-direction: column;
@@ -153,14 +147,7 @@
   border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 20px;
   width: 100%;
-}
-
-.guest-title {
-  font-family: 'Quantico', sans-serif;
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  color: #ffffff;
-  letter-spacing: 3px;
-  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .guest-subtitle {
@@ -169,6 +156,7 @@
   font-size: 0.95rem;
   margin: 0;
 }
+
 .user-bar {
   display: flex;
   align-items: center;
@@ -242,3 +230,26 @@
   border-color: #a78bfa;
   color: white;
 }
+
+.extra-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-extra {
+  background: transparent;
+  border: 1px solid #7c3aed;
+  color: #a78bfa;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.btn-extra:hover { background: #1e1e2e; color: #a78bfa; }

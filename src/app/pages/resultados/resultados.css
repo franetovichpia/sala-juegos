@@ -1,0 +1,150 @@
+.res-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  color: #e2e8f0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.res-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titulo {
+  font-family: 'Orbitron', sans-serif;
+  color: #a78bfa;
+  letter-spacing: 3px;
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.btn-home {
+  background: transparent;
+  border: 1px solid #94a3b8;
+  color: #94a3b8;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.btn-home:hover { background: #1e1e2e; }
+
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #94a3b8;
+  padding: 4rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #1e1e2e;
+  border-top-color: #7c3aed;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.tablas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .tablas-grid { grid-template-columns: 1fr; }
+}
+
+.tabla-card {
+  background: #12121a;
+  border: 1px solid #7c3aed;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.tabla-titulo {
+  font-family: 'Orbitron', sans-serif;
+  color: #a78bfa;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  letter-spacing: 2px;
+}
+
+.sin-datos {
+  color: #4a4a6a;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+}
+
+.ranking-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.ranking-tabla th {
+  color: #94a3b8;
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #1e1e2e;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+}
+
+.ranking-tabla td {
+  padding: 0.5rem 0.6rem;
+  color: #e2e8f0;
+  border-bottom: 1px solid #1e1e2e22;
+}
+
+.ranking-tabla tr:hover td { background: #1e1e2e44; }
+
+.td-email {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.td-puntaje {
+  color: #a78bfa;
+  font-weight: 700;
+}
+
+.badge-gano {
+  background: #052e16;
+  color: #4ade80;
+  border: 1px solid #16a34a;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge-perdio {
+  background: #1c0a0a;
+  color: #f87171;
+  border: 1px solid #ef4444;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}

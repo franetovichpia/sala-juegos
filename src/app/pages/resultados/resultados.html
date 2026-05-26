@@ -1,0 +1,147 @@
+<div class="res-container">
+
+  <div class="res-header">
+    <h2 class="titulo">🏅 RESULTADOS</h2>
+    <button class="btn-home" (click)="irAlHome()">← Volver al inicio</button>
+  </div>
+
+  @if (cargando) {
+    <div class="cargando">
+      <span class="spinner"></span>
+      <p>Cargando resultados...</p>
+    </div>
+  }
+
+  @if (!cargando) {
+    <div class="tablas-grid">
+
+      <!-- AHORCADO -->
+      <div class="tabla-card">
+        <h3 class="tabla-titulo">🔤 Ahorcado</h3>
+        @if (rankingAhorcado.length === 0) {
+          <p class="sin-datos">Sin resultados aún</p>
+        } @else {
+          <table class="ranking-tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Resultado</th>
+                <th>Letras</th>
+                <th>Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rankingAhorcado; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td class="td-email">{{ r.usuario_email }}</td>
+                  <td>
+                    <span [class]="r.gano ? 'badge-gano' : 'badge-perdio'">
+                      {{ r.gano ? '✅ Ganó' : '❌ Perdió' }}
+                    </span>
+                  </td>
+                  <td>{{ r.letras_usadas }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+      <!-- MAYOR O MENOR -->
+      <div class="tabla-card">
+        <h3 class="tabla-titulo">🃏 Mayor o Menor</h3>
+        @if (rankingMayorMenor.length === 0) {
+          <p class="sin-datos">Sin resultados aún</p>
+        } @else {
+          <table class="ranking-tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+                <th>Rondas</th>
+                <th>Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rankingMayorMenor; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td class="td-email">{{ r.usuario_email }}</td>
+                  <td class="td-puntaje">{{ r.puntaje }}</td>
+                  <td>{{ r.rondas_ganadas }} / {{ r.rondas_totales }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+      <!-- PREGUNTADOS -->
+      <div class="tabla-card">
+        <h3 class="tabla-titulo">🧠 Preguntados</h3>
+        @if (rankingPreguntados.length === 0) {
+          <p class="sin-datos">Sin resultados aún</p>
+        } @else {
+          <table class="ranking-tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+                <th>Correctas</th>
+                <th>Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rankingPreguntados; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td class="td-email">{{ r.usuario_email }}</td>
+                  <td class="td-puntaje">{{ r.puntaje }}</td>
+                  <td>{{ r.preguntas_correctas }} / {{ r.preguntas_totales }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+      <!-- NÚMERO SECRETO -->
+      <div class="tabla-card">
+        <h3 class="tabla-titulo">🔢 Número Secreto</h3>
+        @if (rankingNumeroSecreto.length === 0) {
+          <p class="sin-datos">Sin resultados aún</p>
+        } @else {
+          <table class="ranking-tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Intentos</th>
+                <th>Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rankingNumeroSecreto; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td class="td-email">{{ r.usuario_email }}</td>
+                  <td class="td-puntaje">{{ r.intentos }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+    </div>
+  }
+
+</div>

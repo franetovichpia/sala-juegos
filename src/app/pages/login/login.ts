@@ -22,10 +22,11 @@ export class Login {
   mostrarPassword = false;
 
   usuariosRapidos = [
-    { email: 'franetovmariapia@gmail.com', password: '123456' },
-    { email: 'test1@test.com', password: '123456' },
-    { email: 'test2@test.com', password: '123456' },
+    { label: 'Test 1', email: 'test1@test.com', password: '123456' },
+    { label: 'Test 2', email: 'test2@test.com', password: '123456' },
+    { label: 'Test 3', email: 'test3@test.com', password: '123456' },
   ];
+
 
   async ingresar() {
     this.errorMsg = '';

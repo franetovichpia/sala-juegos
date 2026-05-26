@@ -1,4 +1,4 @@
-import { Component, inject, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ElementRef, ViewChild, AfterViewInit, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from '../../services/supabase';
@@ -10,7 +10,7 @@ import { SupabaseService } from '../../services/supabase';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements AfterViewInit {
+export class Home implements OnInit, AfterViewInit {
   @ViewChild('starsCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private supabase = inject(SupabaseService);

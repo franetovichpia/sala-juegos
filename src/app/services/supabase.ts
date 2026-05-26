@@ -139,4 +139,27 @@ async getRankingPreguntados() {
     .order('puntaje', { ascending: false })
     .limit(10);
 }
+
+// NÚMERO SECRETO
+async guardarResultadoNumeroSecreto(data: {
+  usuario_email: string;
+  numero_secreto: number;
+  intentos: number;
+  tiempo_segundos: number;
+  gano: boolean;
+}) {
+  return await this.supabase
+    .from('resultados_numero_secreto')
+    .insert(data);
+}
+
+async getRankingNumeroSecreto() {
+  return await this.supabase
+    .from('resultados_numero_secreto')
+    .select('*')
+    .eq('gano', true)
+    .order('intentos', { ascending: true })
+    .order('tiempo_segundos', { ascending: true })
+    .limit(10);
+}
 }

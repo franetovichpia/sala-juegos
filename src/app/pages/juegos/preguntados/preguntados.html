@@ -1,0 +1,173 @@
+<div class="pq-container">
+
+  <!-- PANTALLA INICIAL -->
+  @if (!juegoIniciado && !juegoTerminado) {
+    <div class="pre-juego">
+      <h2 class="titulo">PREGUNTADOS</h2>
+      <p class="categoria">🧠 Preguntas de cultura general</p>
+
+      @if (cargando) {
+        <div class="cargando">
+          <span class="spinner"></span>
+          <p>Cargando preguntas...</p>
+        </div>
+      }
+
+      @if (!cargando) {
+        <div class="explicacion-box">
+          <div class="explicacion-seccion">
+            <span class="explicacion-icono">🎯</span>
+            <div>
+              <p class="explicacion-titulo">¿Cómo se juega?</p>
+              <p class="explicacion-texto">Se te hacen <strong>{{ TOTAL_PREGUNTAS }} preguntas</strong> de cultura general. Cada una tiene 4 opciones y tenés <strong>{{ TIEMPO_POR_PREGUNTA }} segundos</strong> para responder.</p>
+            </div>
+          </div>
+          <div class="explicacion-seccion">
+            <span class="explicacion-icono"></span>
+            <div>
+              <p class="explicacion-titulo">Puntaje</p>
+              <p class="explicacion-texto">Cada respuesta correcta vale <strong>100 puntos base</strong> más un bonus de hasta <strong>75 puntos extra</strong> según qué tan rápido respondas. Si se acaba el tiempo, no sumás puntos.</p>
+            </div>
+          </div>
+          <div class="explicacion-seccion">
+            <span class="explicacion-icono">⏱</span>
+            <div>
+              <p class="explicacion-titulo">Tiempo</p>
+              <p class="explicacion-texto">Tenés <strong>{{ TIEMPO_POR_PREGUNTA }} segundos</strong> por pregunta. Al agotarse pasa automáticamente a la siguiente sin sumar puntos.</p>
+            </div>
+          </div>
+          <div class="explicacion-seccion">
+            <span class="explicacion-icono"></span>
+            <div>
+              <p class="explicacion-titulo">Puntaje máximo</p>
+              <p class="explicacion-texto">Si respondés todo bien y rápido podés llegar a <strong>{{ TOTAL_PREGUNTAS * 175 }} puntos</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-iniciar" (click)="prepararPartida()">▶ Comenzar partida</button>
+      }
+    </div>
+  }
+
+  <!-- JUEGO EN CURSO -->
+  @if (juegoIniciado && !juegoTerminado && preguntaActual) {
+    <div class="pq-header">
+      <div class="header-izq">
+        <h2 class="titulo">PREGUNTADOS</h2>
+        <span class="progreso-label">{{ progresoLabel }}</span>
+      </div>
+      <div class="header-acciones">
+        <span class="timer">⏱ {{ formatearTiempo() }}</span>
+        <span class="puntaje-header">⭐ {{ puntajeTotal }} pts</span>
+        <button class="btn-abandonar" (click)="confirmarAbandonar()">✕ Abandonar</button>
+      </div>
+    </div>
+
+    <div class="pq-body">
+
+      <!-- Barra de tiempo -->
+      <div class="barra-tiempo-wrap">
+        <div class="barra-tiempo"
+             [style.width.%]="(tiempoRestante / TIEMPO_POR_PREGUNTA) * 100"
+             [class.urgente]="tiempoRestante <= 5">
+        </div>
+      </div>
+      <p class="tiempo-restante" [class.urgente]="tiempoRestante <= 5">{{ tiempoRestante }}s</p>
+
+      <!-- Pregunta -->
+      <div class="pregunta-box">
+        <p class="pregunta-texto">{{ preguntaActual.pregunta }}</p>
+      </div>
+
+      <!-- Opciones -->
+      <div class="opciones-grid">
+        @for (opcion of preguntaActual.opciones; track $index) {
+          <button
+            class="opcion-btn"
+            [class.correcta]="claseOpcion(opcion) === 'correcta'"
+            [class.incorrecta]="claseOpcion(opcion) === 'incorrecta'"
+            [class.opacada]="claseOpcion(opcion) === 'opacada'"
+            [disabled]="respondio"
+            (click)="responder(opcion)">
+            {{ opcion }}
+          </button>
+        }
+      </div>
+
+      <!-- Feedback -->
+      @if (respondio) {
+        <div class="feedback" [class.feedback-ok]="fueCorrecta" [class.feedback-mal]="!fueCorrecta">
+          @if (fueCorrecta) { ✅ ¡Correcto! +{{ 100 + tiempoRestante * 5 }} pts }
+          @if (!fueCorrecta && opcionSeleccionada) { ❌ Incorrecto. La correcta era: {{ preguntaActual.correcta }} }
+          @if (!fueCorrecta && !opcionSeleccionada) { ⏰ Tiempo agotado. La correcta era: {{ preguntaActual.correcta }} }
+        </div>
+      }
+
+    </div>
+
+    @if (mostrarConfirmAbandonar) {
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <p class="modal-titulo">¿Abandonar partida?</p>
+          <p class="modal-texto">Perderás todo el progreso de esta partida.</p>
+          <div class="modal-acciones">
+            <button class="btn-modal-cancelar" (click)="cancelarAbandonar()">Seguir jugando</button>
+            <button class="btn-modal-confirmar" (click)="abandonarPartida()">Abandonar</button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- RESULTADO FINAL -->
+  @if (juegoTerminado) {
+    <div class="resultado-final">
+      <h2 class="titulo">{{ preguntasCorrectas >= TOTAL_PREGUNTAS / 2 ? '🏆 ¡Buen juego!' : '💀 Podés mejorar' }}</h2>
+
+      <div class="stats-finales">
+        <div class="stat-item">
+          <span class="stat-label">Puntaje</span>
+          <span class="stat-valor" style="color: #a78bfa">{{ puntajeTotal }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Correctas</span>
+          <span class="stat-valor" style="color: #4ade80">{{ preguntasCorrectas }} / {{ TOTAL_PREGUNTAS }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Tiempo</span>
+          <span class="stat-valor" style="color: #06b6d4">{{ formatearTiempo() }}</span>
+        </div>
+      </div>
+
+      <div class="resultado-final-acciones">
+        <button class="btn-home" (click)="irAlHome()">✕ Ir al inicio</button>
+        <button class="btn-ranking" (click)="mostrarRanking = !mostrarRanking">🏅 Ver ranking</button>
+        <button class="btn-jugar-de-nuevo" (click)="prepararPartida()">↺ Jugar de nuevo</button>
+      </div>
+
+      @if (mostrarRanking) {
+        <div class="ranking-box">
+          <h3 class="ranking-titulo">🏅 Top 10 — Preguntados</h3>
+          <table class="ranking-tabla">
+            <thead>
+              <tr><th>#</th><th>Usuario</th><th>Puntaje</th><th>Correctas</th><th>Tiempo</th></tr>
+            </thead>
+            <tbody>
+              @for (r of ranking; track $index) {
+                <tr [class.fila-propia]="r.usuario_email === usuarioEmail">
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ r.usuario_email }}</td>
+                  <td>{{ r.puntaje }}</td>
+                  <td>{{ r.preguntas_correctas }} / {{ r.preguntas_totales }}</td>
+                  <td>{{ r.tiempo_segundos }}s</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  }
+
+</div>
